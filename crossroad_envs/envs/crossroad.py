@@ -297,12 +297,12 @@ class CrossRoad(gym.Env):
         player_at_goal = self.player.row == 0
         if self.player.alive() and player_at_goal:
             self.player.drop_block(self.goal_blocks_grp, self.obstacles_grp, self.all_sprites_grp)
-            step_reward += 1
+            step_reward += 5
             self._soft_reset()
         
         finished = len(self.goal_blocks_grp) >= self.cols
         if finished:
-            step_reward += 5
+            step_reward += 10
             
         terminated = self.player_lives <= 0 or finished
         info = self._get_info()
