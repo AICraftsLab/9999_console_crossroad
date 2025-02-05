@@ -36,7 +36,7 @@ class CrossRoad(gym.Env):
         # (self.player_fov + 1): +1 for player col
         # (self.cols + 1): Row length/cols + 1 for row train direction
         obs_num = (self.player_fov + 1) * (self.cols + 1)
-        obs_num += 2  # player col and row
+        obs_num += 3  # player col, row, and lives
         
         self.action_space = spaces.Discrete(5)
         self.observation_space = spaces.Box(
@@ -290,7 +290,7 @@ class CrossRoad(gym.Env):
             player_death_rect = self.player.rect
             self._soft_reset() # last thing here
             
-            
+         
         # Must be after checking for collision with trains, else
         # the just dropped block will kill the player.
         # Drop, then soft_reset.
