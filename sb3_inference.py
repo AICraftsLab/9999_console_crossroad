@@ -15,8 +15,8 @@ if __name__ == "__main__":
     save_dir = 'test'
     seed = None
     
-    model_file_path = os.path.join(save_dir, 'model_5000000_steps.zip')
-    stats_file_path = os.path.join(save_dir, 'model_vecnormalize_5000000_steps.pkl')
+    model_file_path = os.path.join(save_dir, 'model_1800000_steps.zip')
+    stats_file_path = os.path.join(save_dir, 'model_vecnormalize_1800000_steps.pkl')
     
     env = [lambda: gym.make(env_id,
                             render_mode='human'

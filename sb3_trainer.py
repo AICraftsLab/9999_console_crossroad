@@ -35,19 +35,19 @@ class SaveNormStatsCallback(BaseCallback):
 
 if __name__ == "__main__":
     env_id = 'CrossRoad'
-    save_dir = 'test'
+    save_dir = 'ppo_run1'
     seed = None
     tensorboard_log = 'tensorboard_logs'
     
     # For resuming training
     is_new_training = True
-    model_file_path = None
-    stats_file_path = None
+    model_file_path = os.path.join(save_dir, 'model_3200000_steps.zip')
+    stats_file_path = os.path.join(save_dir, 'model_vecnormalize_3200000_steps.pkl')
     
     # Save_dir should not exist if is_new_training
     os.makedirs(save_dir, exist_ok= not is_new_training)
     
-    timesteps = 5e6
+    timesteps = 5e6 - 1802240
     num_cpu = 20  # Env nums
     vec_env_cls = DummyVecEnv
     

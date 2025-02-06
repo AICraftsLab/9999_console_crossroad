@@ -3,7 +3,7 @@ from gymnasium.utils.play import play
 import pygame as pg
 
 if __name__ == '__main__':
-    env = gym.make('crossroad_envs:CrossRoad', render_mode='rgb_array')
+    env = gym.make('crossroad_envs:CrossRoad', render_mode='rgb_array', fps=5)
     print(env.observation_space.shape[0])
     print(env.action_space.n)
     

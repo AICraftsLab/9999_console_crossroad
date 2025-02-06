@@ -29,6 +29,7 @@ class CrossRoad(gym.Env):
         self.player_fov = fov * 2
         self.width = self.cols * CELL_SIZE
         self.height = self.rows * CELL_SIZE
+        self.truncation_steps = 500 * PLAYER_LIVES
         
         #CrossRoad.metadata['fps'] = fps
         CrossRoad.metadata['render_fps'] = fps
@@ -248,6 +249,7 @@ class CrossRoad(gym.Env):
         
         self.player_lives = PLAYER_LIVES
         self.episode += 1
+        self.steps_done = 0
         
         if self.render_mode == 'human':
             self._render_frame()
@@ -265,7 +267,7 @@ class CrossRoad(gym.Env):
                     sys.exit()
                 
         player_death_rect = None
-        step_reward = 0
+        self.steps_done += 1
         
         if action == 0:
             action = 'right'
@@ -281,11 +283,16 @@ class CrossRoad(gym.Env):
         self.all_sprites_grp.update(action=action)
         
         #step_reward = ((self.rows - 1) - self.player.row) / 10
+        step_reward = -self.player.row / (self.rows - 1) * 0.01
+        
+        if False and self.steps >= self.truncation_steps:
+            self.player_lives -= 1
+            self._soft_reset()
         
         for _ in pg.sprite.spritecollide(self.player, self.obstacles_grp, 0):
             self.player.kill()
             #step_reward = -step_reward // 2
-            step_reward -= 1
+            step_reward -= 0.1
             self.player_lives -= 1
             player_death_rect = self.player.rect
             self._soft_reset() # last thing here
@@ -304,11 +311,11 @@ class CrossRoad(gym.Env):
         if finished:
             step_reward += 10
             
-        terminated = self.player_lives <= 0 or finished
         info = self._get_info()
         observation = self._get_observation()
         reward = step_reward
-        truncated = False
+        terminated = self.player_lives <= 0 or finished
+        truncated = self.steps_done >= self.truncation_steps
         
         if self.render_mode == 'human':
             self._render_frame(player_death_rect=player_death_rect)
